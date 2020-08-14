@@ -1,0 +1,41 @@
+---
+-  
+   hosts: web
+   name: "Web Server"
+   become: true
+   vars:
+    packages:
+      - httpd
+      - tomcat
+      - mariadb-server
+      - java
+      - bind-utils
+
+   tasks: 
+    - 
+      name: "Installing packages on Centos Machine"
+      yum: 
+        name: "{{ packages }}"
+        state: latest
+        update_cache: true
+    - 
+      name: "Web Service Start"
+      service: 
+        enabled: true
+        name: httpd
+        state: restarted
+    - 
+      name: "Start Tomcat Service"
+      service: 
+        enabled: true
+        name: tomcat
+        state: restarted
+    - 
+      name: "Start the Database"
+      service: 
+        enabled: true
+        name: mariadb
+        state: restarted
+    -
+      name: "List all open ports"
+      command: netstat -tunlp
